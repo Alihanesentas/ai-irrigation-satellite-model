@@ -6,6 +6,8 @@ Consequences / Rejected alternatives.
 | Record | Status |
 |---|---|
 | `data-access-layer.md` | Accepted |
+| `landsat-data-access.md` | Accepted |
+| `soil-moisture-data-access.md` | Accepted |
 | `spatial-analysis-unit.md` | Accepted |
 | `observation-operator.md` | Accepted |
 | `weather-forcing-split.md` | Accepted |

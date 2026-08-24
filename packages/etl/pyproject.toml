@@ -1,0 +1,29 @@
+[project]
+name = "agritwin-etl"
+version = "0.1.0"
+description = "Data plane. Reduces raw satellite and weather inputs into the canonical zone-day table. Owns no model, prediction, or decision — see docs/modules.md#data-plane."
+requires-python = ">=3.12"
+dependencies = [
+    "agritwin-core",
+    "dagster>=1.7",
+    "dagster-webserver>=1.7",
+    "pystac-client>=0.8",
+    "odc-stac>=0.3",
+    "xarray>=2024.3",
+    "rioxarray>=0.15",
+    "pandas>=2.2",
+    "polars>=0.20",
+    "geopandas>=0.14",
+    "requests>=2.31",
+    "pydantic-settings>=2.2",
+]
+
+[tool.uv.sources]
+agritwin-core = { path = "../core" }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agritwin_etl"]
