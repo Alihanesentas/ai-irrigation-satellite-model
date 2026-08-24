@@ -341,18 +341,19 @@ device or through a recipe. This removes an entire class of compromise from the 
 
 ## 12. Unresolved slots
 
-These are real holes in this document, not oversights. Filling them requires decisions in
-`open-decisions.md`.
+Filling these requires decisions in `open-decisions.md`.
 
 | Slot | Blocked on |
 |---|---|
-| `IRRIGATION_LOG` volume field semantics | Applied-water measurement method |
-| BOM and telemetry schema | Applied-water measurement method |
 | Cohort key definition in `PARCEL` | Cohort granularity, target cropping pattern |
-| `PARCEL_ADAPTATION` field list | Adaptation parameterisation |
+| `PARCEL_ADAPTATION` remaining fields | Adaptation parameterisation |
 | Assimilation implementation | Online update method |
 | Training/inference forcing alignment | Domain shift remedy |
 
-**Applied-water measurement is the blocking one.** It appears in the data model, the recipe
-contract, the telemetry schema, the BOM, and the self-calibration loop. The data plane schema
-cannot be finalised until it is settled.
+**Resolved since first draft.** Applied-water measurement is settled — see
+`decisions/applied-water-measurement.md` and the concrete field definitions in `schemas.md`.
+It unblocked `IRRIGATION_LOG`, the telemetry schema, the BOM, and `fw` in
+`PARCEL_ADAPTATION`.
+
+**Target cropping pattern is now the blocking decision.** It gates Gate 2 and, through
+irrigation method, determines how strong the self-calibration feedback is.

@@ -41,19 +41,6 @@ and the compute cost is negligible.
 
 ---
 
-## Applied-water measurement — BLOCKING
-
-Ties directly into the edge node and the BOM. The self-calibration loop in
-`decisions/pooling-strategy.md` depends on it, and it lands in the telemetry schema.
-
-- Valve open time x nominal flow rate
-- Pulse-output water meter per zone
-- Pressure switch verification only
-
-**This must close before the data plane schema can be designed.**
-
----
-
 ## PINN framework
 
 - PyTorch — ecosystem, hiring, abundant examples
@@ -74,9 +61,14 @@ problems actually appear. Investing in JAX now solves a problem not yet confirme
 
 ---
 
-## Target cropping pattern — HIGHEST UNCERTAINTY
+## Target cropping pattern — HIGHEST UNCERTAINTY, NOW BLOCKING
 
-Commercial question that precedes the technical ones. See `decisions/development-phases.md`.
+Commercial question that precedes the technical ones. See `delivery-plan.md`.
+
+Sharpened by `decisions/applied-water-measurement.md`: irrigation method determines feedback
+loop strength. Under subsurface drip the dripline sits below C-band penetration depth, so
+backscatter barely responds to applied water and the self-calibration loop weakens or
+disappears. Perennial orchards are also the hardest case for the SAR signal itself.
 
 - Annual field crops — easiest for SAR, largest area
 - Perennial orchards (olive, vine, fig, citrus) — dense locally, technically risky

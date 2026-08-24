@@ -1,39 +1,27 @@
+# Data — never commit
+data/
+*.tif
+*.tiff
+*.zarr/
+*.nc
+*.SAFE/
+*.h5
+
 # Python
 __pycache__/
 *.py[cod]
 .venv/
 venv/
+.ipynb_checkpoints/
 .pytest_cache/
-.mypy_cache/
-.ruff_cache/
-*.egg-info/
 
-# Node / Next.js
-node_modules/
-.next/
-out/
-dist/
-build/
-
-# Env / secrets
+# Secrets
 .env
-.env.*
-!.env.example
-
-# Data / model artifacts
-*.zarr
-*.parquet
-mlruns/
-*.ckpt
-*.pt
-
-# Firmware
-firmware/**/build/
-firmware/**/sdkconfig
-firmware/**/managed_components/
+*.pem
+*.key
+credentials.json
 
 # OS / editor
 .DS_Store
 .idea/
 .vscode/
-*.swp

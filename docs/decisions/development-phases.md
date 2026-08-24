@@ -1,6 +1,11 @@
 # Development phases
 
-**Status:** Proposed — confirm before implementing
+**Status:** Superseded by `../delivery-plan.md`
+
+> Retained for rationale. The walking-skeleton principle and the three-job argument for the
+> FAO-56 bucket model still hold. What changed: Phase 0 no longer gates the platform and
+> rule-based tracks, and hardware development starts in Phase 1 while deployment stays last.
+> See `../superseded-decisions.md`.
 
 ## Decision
 

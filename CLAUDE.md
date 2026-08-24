@@ -47,6 +47,14 @@ Each links to the record that explains why.
   -> `decisions/pooling-strategy.md`
 - Do not solve hydrological columns at 10 m pixel level. Modelling finer than actuator
   granularity is waste. -> `decisions/spatial-analysis-unit.md`
+- Do not make the irrigation decision a learned classifier. No ground-truth labels exist.
+  -> `decisions/ml-layering.md`
+- Do not store derived volume without raw pulse count and k-factor. -> `schemas.md`
+- Do not apply wetted fraction inside `IRRIGATION_LOG`. Logs record fact; the twin
+  interprets. -> `schemas.md`
+
+Before proposing an alternative to any of the above, read `docs/superseded-decisions.md` —
+it may already have been considered and rejected.
 
 ---
 
@@ -57,6 +65,9 @@ docs/decisions/       Architecture decision records — read these first
 docs/architecture.md  Principles, data flow, cross-cutting concerns
 docs/modules.md       The six modules: responsibilities, boundaries, stack
 docs/open-decisions.md   Questions not yet settled
+docs/superseded-decisions.md  Abandoned options and why — read before re-proposing one
+docs/delivery-plan.md Phases, gates, tracks, risk register
+docs/schemas.md       Concrete field definitions frozen at Gate 1
 docs/cost-model.md    Cost model and unit economics
 packages/core/        Shared schema: parcel, zone, units, constants
 packages/etl/         Data plane — Dagster assets
@@ -72,6 +83,10 @@ experiments/          Phase 0 throwaway notebooks; production code must not impo
 
 ## Current phase
 
-**Phase 0 — feasibility.** See `decisions/development-phases.md`.
+**Phase 1 — telemetry and control plane.** See `docs/delivery-plan.md`.
 
-No production code under `packages/` until Phase 0 closes. `experiments/` is unrestricted.
+No model, no hardware. A device simulator stands in for the field. The recipe contract,
+telemetry schema and conformance suite are Gate 1 deliverables and freeze there.
+
+The SAR feasibility spike runs as a parallel research track in `experiments/` and blocks
+nothing in Phase 1 or 2.
