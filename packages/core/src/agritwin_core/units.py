@@ -21,6 +21,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from typing import Annotated
+
+from pydantic import BeforeValidator, PlainSerializer
 
 
 @dataclass(frozen=True, slots=True)
@@ -113,3 +116,46 @@ def require_utc(dt: datetime) -> datetime:
     if dt.utcoffset() != timezone.utc.utcoffset(None):
         raise ValueError(f"Datetime must be UTC, got offset {dt.utcoffset()} for {dt!r}")
     return dt
+
+
+# --- Pydantic wire adapters -------------------------------------------------
+#
+# A plain `arbitrary_types_allowed` model field accepts these dataclasses in
+# Python but has no defined JSON wire format. Every record in schemas.md and
+# the recipe contract in architecture.md ("target_mm": 12.0) puts these
+# quantities on the wire as bare numbers, unit implied by field name — so the
+# JSON shape must stay a bare float even though the Python-side type stays
+# unit-safe. These `Annotated` aliases are what makes both true at once: use
+# them (not the raw dataclass) as a pydantic model field's type.
+
+
+def _depth_mm(v: object) -> DepthMM:
+    return v if isinstance(v, DepthMM) else DepthMM(float(v))  # type: ignore[arg-type]
+
+
+def _area_m2(v: object) -> AreaM2:
+    return v if isinstance(v, AreaM2) else AreaM2(float(v))  # type: ignore[arg-type]
+
+
+def _volume_l(v: object) -> VolumeL:
+    return v if isinstance(v, VolumeL) else VolumeL(float(v))  # type: ignore[arg-type]
+
+
+def _volumetric_moisture(v: object) -> VolumetricMoisture:
+    return v if isinstance(v, VolumetricMoisture) else VolumetricMoisture(float(v))  # type: ignore[arg-type]
+
+
+PydanticDepthMM = Annotated[
+    DepthMM, BeforeValidator(_depth_mm), PlainSerializer(lambda d: d.value, return_type=float)
+]
+PydanticAreaM2 = Annotated[
+    AreaM2, BeforeValidator(_area_m2), PlainSerializer(lambda d: d.value, return_type=float)
+]
+PydanticVolumeL = Annotated[
+    VolumeL, BeforeValidator(_volume_l), PlainSerializer(lambda d: d.value, return_type=float)
+]
+PydanticVolumetricMoisture = Annotated[
+    VolumetricMoisture,
+    BeforeValidator(_volumetric_moisture),
+    PlainSerializer(lambda d: d.value, return_type=float),
+]

@@ -15,6 +15,7 @@ Consequences / Rejected alternatives.
 | `pooling-strategy.md` | Proposed |
 | `applied-water-measurement.md` | Accepted |
 | `ml-layering.md` | Accepted |
+| `device-identity-and-recipe-signing.md` | Accepted |
 | `development-phases.md` | Superseded by `../delivery-plan.md` |
 
 **Status meanings**

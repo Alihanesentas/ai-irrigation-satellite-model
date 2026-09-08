@@ -21,6 +21,10 @@ venv/
 *.key
 credentials.json
 
+# Local SQLite state (packages/api dev/test default)
+*.db
+*.db-journal
+
 # OS / editor
 .DS_Store
 .idea/
