@@ -17,6 +17,7 @@ Consequences / Rejected alternatives.
 | `ml-layering.md` | Accepted |
 | `device-identity-and-recipe-signing.md` | Accepted |
 | `crop-parameterization-manisa.md` | Proposed |
+| `irrigation-trigger-policy.md` | Proposed |
 | `development-phases.md` | Superseded by `../delivery-plan.md` |
 
 **Status meanings**

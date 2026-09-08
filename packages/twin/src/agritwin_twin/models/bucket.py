@@ -125,12 +125,16 @@ class BucketModel:
     def _initialize_state(self, at: datetime) -> None:
         root_depth_m = self.config.crop.root_depth_max_m
         theta = self.config.soil.theta_fc - self._dr_mm / (1000 * root_depth_m)
+        taw = _taw_mm(self.config.soil, root_depth_m)
+        raw = self.config.crop.depletion_fraction_p * taw
         self._state = SoilState(
             valid_at=at,
             theta=VolumetricMoisture(max(0.0, min(1.0, theta))),
             theta_std=None,
             dr_mm=DepthMM(self._dr_mm),
             ks_stress=1.0,
+            raw_mm=DepthMM(raw),
+            taw_mm=DepthMM(taw),
             confidence="normal",
         )
 
@@ -231,6 +235,8 @@ class BucketModel:
             theta_std=None,
             dr_mm=DepthMM(dr_new),
             ks_stress=ks_stress,
+            raw_mm=DepthMM(raw),
+            taw_mm=DepthMM(taw),
             confidence="normal",
         )
         return self._state
@@ -259,6 +265,8 @@ class BucketModel:
             theta_std=self._state.theta_std,
             dr_mm=self._state.dr_mm,
             ks_stress=self._state.ks_stress,
+            raw_mm=self._state.raw_mm,
+            taw_mm=self._state.taw_mm,
             confidence=confidence,
         )
         return self._state

@@ -89,6 +89,19 @@ class SoilState:
     conversion formula."""
     ks_stress: float
     """Water stress coefficient, section 9.3, in [0, 1]. 1 = no stress."""
+    raw_mm: DepthMM
+    """Readily available water (`docs/fao56-calculations.md` section 9.1) —
+    the depletion level at which `ks_stress` starts falling below 1. Reported
+    here, not just internally, so `packages/decision/` can turn a bare `Dr`
+    number into an irrigation trigger ("depleted past RAW") without itself
+    knowing any crop or soil parameter — it reads the threshold the twin
+    already computed, per `CLAUDE.md` rule 3 (decision engine stays
+    soil-physics-free)."""
+    taw_mm: DepthMM
+    """Total available water, section 9.1 — the bucket's full capacity
+    (`Dr = 0` is full, `Dr = taw_mm` is permanent wilting point). Reported
+    alongside `raw_mm` for the same reason: it's the other end of the range
+    a refill target is computed against."""
     confidence: str
     """`"normal"` or `"low"` — feeds `docs/architecture.md` section 4's
     recipe `confidence` field directly. The bucket model reports `"low"`

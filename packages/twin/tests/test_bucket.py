@@ -1,6 +1,8 @@
 import math
 from datetime import datetime, timezone
 
+import pytest
+
 from agritwin_core.units import DepthMM
 from agritwin_twin.crops import GRAPE_MANISA, OLIVE_MANISA
 from agritwin_twin.interface import DailyForcing
@@ -73,6 +75,12 @@ def test_repeated_dry_hot_days_increase_depletion_and_trigger_stress():
         assert curr.dr_mm.value >= prev.dr_mm.value - 1e-9
     # Enough consecutive dry days should eventually depress Ks below 1.
     assert any(s.ks_stress < 1.0 for s in states)
+    # raw_mm/taw_mm are the physical bucket thresholds packages/decision
+    # reads to turn a bare Dr into a trigger decision — must stay constant
+    # for a fixed crop/soil pair and satisfy raw <= taw.
+    for state in states:
+        assert state.raw_mm.value == pytest.approx(raw)
+        assert state.raw_mm.value <= state.taw_mm.value
 
 
 def test_theta_never_leaves_physical_bounds_under_dry_stress():
@@ -135,10 +143,14 @@ def test_extrapolate_freezes_state_and_degrades_confidence_after_threshold():
     bucket = _make_bucket(OLIVE_MANISA, initial_dr_mm=10.0)
     bucket.step(_hot_dry_summer_day(1), DepthMM(0.0))
     frozen_theta = bucket.state().theta
+    frozen_raw = bucket.state().raw_mm
+    frozen_taw = bucket.state().taw_mm
 
     last_state = None
     for day in range(10):
         last_state = bucket.extrapolate(datetime(2026, 7, 2 + day, tzinfo=timezone.utc))
         assert last_state.theta == frozen_theta  # never guesses a new value
+        assert last_state.raw_mm == frozen_raw
+        assert last_state.taw_mm == frozen_taw
 
     assert last_state.confidence == "low"

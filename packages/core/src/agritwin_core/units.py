@@ -98,6 +98,17 @@ def volume_to_zone_average_depth(volume: VolumeL, area: AreaM2) -> DepthMM:
     return DepthMM(volume.value / area.value)
 
 
+def depth_to_volume(depth: DepthMM, area: AreaM2) -> VolumeL:
+    """Inverse of `volume_to_zone_average_depth`: the volume needed to apply
+    a target zone-average depth over a zone's area. `packages/decision` uses
+    this to turn a planned refill depth (mm) into a volume, on the way to a
+    `duration_s` via the zone's nominal flow rate — the same mm-to-litres
+    relationship as the metered-volume path, just run in the other
+    direction, so it belongs next to it rather than being reimplemented at
+    the call site."""
+    return VolumeL(depth.value * area.value)
+
+
 def utc_now() -> datetime:
     """The only sanctioned way to get 'now' in this codebase. Always
     timezone-aware UTC — never naive, never local."""

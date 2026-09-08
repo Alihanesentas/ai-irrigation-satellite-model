@@ -7,6 +7,7 @@ from agritwin_core.units import (
     DepthMM,
     VolumetricMoisture,
     VolumeL,
+    depth_to_volume,
     require_utc,
     volume_to_zone_average_depth,
 )
@@ -30,6 +31,13 @@ def test_volume_to_zone_average_depth_matches_schemas_definition():
     # docs/schemas.md: "measured_depth_mm ... volume_l / area_m2"
     depth = volume_to_zone_average_depth(VolumeL(10_000), AreaM2(1_000))
     assert depth == DepthMM(10.0)
+
+
+def test_depth_to_volume_is_the_inverse_of_volume_to_zone_average_depth():
+    area = AreaM2(1_000)
+    volume = depth_to_volume(DepthMM(10.0), area)
+    assert volume == VolumeL(10_000)
+    assert volume_to_zone_average_depth(volume, area) == DepthMM(10.0)
 
 
 def test_depth_mm_arithmetic_stays_within_unit():
